@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TrendsKotlin</string>
+    <string name="numPlayers">2</string>
+
+    <string name="defaultTxt">Default Text</string>
+
+    <string name="teamNum">Team 1</string>
+    <string name="gameInstruction">Match 1 word with:</string>
+    <string name="gameQuery">Default Text</string>
+    <string name="gameHint">Enter Term</string>
+
+    <string name="title_activity_results">ResultsActivity</string>
+    <string name="tab_text_1">Scores</string>
+    <string name="tab_text_2">History</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="scores">%1$s: %2$s</string>
+
+</resources>

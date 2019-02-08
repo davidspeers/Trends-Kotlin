@@ -15,6 +15,11 @@ import android.net.ConnectivityManager
 import android.widget.Toast
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
+import android.util.Log
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getHeight
+
+
 
 
 
@@ -45,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide() //Removes actionBar for this activity only. Could also have changed styles.
+
+        val pathView = findViewById<PathView>(R.id.path)
+        pathView.init()
 
         // Initialise Buttons
         partyAddBtn = findViewById(R.id.partyAddBtn)

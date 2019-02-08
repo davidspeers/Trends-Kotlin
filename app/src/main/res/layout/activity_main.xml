@@ -5,11 +5,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         tools:context=".MainActivity">
 
-    <com.example.trendskotlin.AnimatedView android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <!--<com.example.trendskotlin.AnimatedView android:layout_width="match_parent" android:layout_height="match_parent"/>-->
+
+    <com.example.trendskotlin.PathView android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/path"/>
+
+    <!--<com.example.trendskotlin.StarAnimationView android:layout_width="match_parent"
+                                                android:layout_height="match_parent"/>-->
+
+    <!--<com.example.trendskotlin.MyView android:layout_width="match_parent" android:layout_height="match_parent"/>-->
 
     <ImageView
             android:layout_width="192dp"
@@ -34,6 +39,7 @@
             android:layout_height="170dp" app:srcCompat="@drawable/party"
             android:id="@+id/PartyCard" android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/trendsLogo" app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="30dp"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"/>
 
@@ -53,7 +59,7 @@
             android:background="@drawable/ic_btn_add"
             android:id="@+id/partyAddBtn"
             app:layout_constraintEnd_toEndOf="@+id/PartyCard"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="46dp"
             app:layout_constraintTop_toTopOf="@+id/PartyCard" app:layout_constraintBottom_toBottomOf="@+id/PartyCard"/>
 
     <ImageButton
@@ -61,9 +67,8 @@
             android:layout_height="@dimen/addIconSize"
             android:background="@drawable/ic_btn_remove"
             android:id="@+id/partyRemBtn"
-            app:layout_constraintStart_toStartOf="@+id/PartyCard" android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="@+id/PartyCard" app:layout_constraintBottom_toBottomOf="@+id/PartyCard"
-    />
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="46dp"/>
 
     <ImageButton
             android:layout_width="@dimen/playIconSize"
@@ -81,6 +86,7 @@
             android:id="@+id/CpuCard" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintTop_toBottomOf="@+id/PartyCard"
+            android:paddingHorizontal="30dp"
             android:layout_marginTop="24dp"/>
 
     <TextView
@@ -98,7 +104,7 @@
             android:background="@drawable/ic_btn_add"
             android:id="@+id/cpuAddBtn"
             app:layout_constraintEnd_toEndOf="@+id/CpuCard"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="46dp"
             app:layout_constraintBottom_toBottomOf="@+id/CpuCard" app:layout_constraintTop_toTopOf="@+id/CpuCard"/>
 
     <ImageButton
@@ -107,7 +113,7 @@
             android:background="@drawable/ic_btn_remove"
             android:id="@+id/cpuRemBtn"
             app:layout_constraintStart_toStartOf="@+id/CpuCard"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="46dp"
             app:layout_constraintTop_toTopOf="@+id/CpuCard" app:layout_constraintBottom_toBottomOf="@+id/CpuCard"
     />
     <ImageButton
@@ -122,11 +128,15 @@
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:background="@drawable/achievements"
+            android:background="@android:color/transparent"
+            android:src="@drawable/achievements"
+            android:paddingHorizontal="30dp"
             android:id="@+id/achieveBtn"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/CpuCard"/>
+            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/CpuCard"
+            android:scaleType="fitCenter"
+    />
 
 </android.support.constraint.ConstraintLayout>

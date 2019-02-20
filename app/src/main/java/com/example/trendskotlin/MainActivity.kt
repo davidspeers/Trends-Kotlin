@@ -18,10 +18,11 @@ import android.opengl.ETC1.getWidth
 import android.util.Log
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getHeight
-
-
-
-
+import android.animation.ValueAnimator
+import android.os.Build.VERSION_CODES.O
+import android.view.animation.AnimationSet
+import android.view.Gravity
+import android.view.View
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,7 +53,25 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide() //Removes actionBar for this activity only. Could also have changed styles.
 
         val pathView = findViewById<PathView>(R.id.path)
+        //val pathView2 = findViewById<PathView2>(R.id.patheraser)
+
         pathView.init()
+
+        //Drawable Path
+        /*val view = TextView(this)
+        view.text = "click me"
+        view.setTextColor(-0x333334)
+        view.gravity = Gravity.CENTER
+        view.textSize = 48f
+        val d = PathDrawable()
+        view.setBackgroundDrawable(d)
+        val l = object : View.OnClickListener {
+            override fun onClick(v: View) {
+                d.startAnimating()
+            }
+        }
+        view.setOnClickListener(l)
+        setContentView(view)*/
 
         // Initialise Buttons
         partyAddBtn = findViewById(R.id.partyAddBtn)

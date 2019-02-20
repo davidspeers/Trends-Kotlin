@@ -11,6 +11,10 @@
 
     <com.example.trendskotlin.PathView android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/path"/>
 
+    <!--<com.example.trendskotlin.PathView2 android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/patheraser"/>-->
+
+    <com.example.trendskotlin.CircleView android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/circle"/>
+
     <!--<com.example.trendskotlin.StarAnimationView android:layout_width="match_parent"
                                                 android:layout_height="match_parent"/>-->
 

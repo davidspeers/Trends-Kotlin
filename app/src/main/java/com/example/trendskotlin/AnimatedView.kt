@@ -67,6 +67,9 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     var paint: Paint? = null
     var length: Float = 0.toFloat()
 
+    var paint2: Paint? = null
+    var drawEraser: Boolean = false
+
     fun init() {
         //this.dimensions is waiting for view dimensions to be available
         this.dimensions {
@@ -78,6 +81,11 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             paint!!.color = Color.BLUE
             paint!!.strokeWidth = 10f
             paint!!.style = Paint.Style.STROKE
+
+            paint2 = Paint()
+            paint2!!.color = Color.BLUE
+            paint2!!.strokeWidth = 10f
+            paint2!!.style = Paint.Style.STROKE
 
             Log.d("ViewDimensions", "Height: $viewHeight, Width: $viewWidth")
 
@@ -102,19 +110,23 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             val measure = PathMeasure(path, false)
             length = measure.length
 
-            val intervals = floatArrayOf(length, length)
+            //val intervals = floatArrayOf(length, length)
 
             val animator = ObjectAnimator.ofFloat(this@PathView, "phase", 1f, 0f)
             animator.setDuration(5000)
 
-            val animator2 = ObjectAnimator.ofFloat(this@PathView, "phase", 1f, 0f)
-            animator2.setDuration(5000)
+            //val view2 = findViewById<PathView2>(R.id.patheraser)
+
+            //val animator2 = ObjectAnimator.ofFloat(view2, "phase", 1f, 0f)
+            //animator2.setDuration(5000)
 
             animator.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationEnd(animation: Animator) {
                     Log.d("Hello", "Animation Ended")
                     paint!!.color = Color.RED
                     //invalidate()
+                    //view2.init()
+
                     animator.start()
                 }
 
@@ -141,11 +153,11 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
     }
 
-    //is called by animtor object
+    //is called by ObjectAnimator - ignore never used warning
     fun setPhase(phase: Float) {
-        Log.d("pathview", "setPhase called with:$phase")
+        //Log.d("pathview", "setPhase called with:$phase")
         paint!!.pathEffect = createPathEffect(length, phase, 0.0f)
-        invalidate()//will calll onDraw
+        invalidate()//will call onDraw
     }
 
     private fun createPathEffect(pathLength: Float, phase: Float, offset: Float): PathEffect {
@@ -159,7 +171,7 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         super.onDraw(c)
         //c.drawPath(path, paint)
         c.drawPath(path, paint)
-        c.drawPath(path2, paint)
+        //c.drawPath(path, paint2)
         //c.drawLines(floatArrayOf(0f, 20f, 1000f, 1000f), paint)
     }
 

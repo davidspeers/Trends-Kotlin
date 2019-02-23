@@ -52,24 +52,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide() //Removes actionBar for this activity only. Could also have changed styles.
 
+        //Start Background Animation
         val pathView = findViewById<PathView>(R.id.path)
-        //val pathView2 = findViewById<PathView2>(R.id.patheraser)
-
         pathView.init()
-
-        // Initialise Buttons
-//        partyAddBtn = findViewById(R.id.partyAddBtn)
-//        partyRemBtn = findViewById(R.id.partyRemBtn)
-//        partyPlayBtn = findViewById(R.id.partyPlayBtn)
-//        cpuAddBtn = findViewById(R.id.cpuAddBtn)
-//        cpuRemBtn = findViewById(R.id.cpuRemBtn)
-//        cpuPlayBtn = findViewById(R.id.cpuPlayBtn)
-//        achieveBtn = findViewById(R.id.achieveBtn)
-//        helpBtn = findViewById(R.id.helpBtn)
-//
-//        //Initialise Text Views
-//        partyText = findViewById(R.id.partyTextView)
-//        cpuText = findViewById(R.id.cpuTextView)
 
         //Set onClick Listeners
         //Party Mode

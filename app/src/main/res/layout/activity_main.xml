@@ -20,7 +20,7 @@
 
     <!--<com.example.trendskotlin.MyView android:layout_width="match_parent" android:layout_height="match_parent"/>-->
 
-    <ImageView
+    <!--<ImageView
             android:layout_width="192dp"
             android:layout_height="70dp"
             app:srcCompat="@drawable/trends_logo"
@@ -141,6 +141,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/CpuCard"
             android:scaleType="fitCenter"
-    />
+    />-->
 
 </android.support.constraint.ConstraintLayout>

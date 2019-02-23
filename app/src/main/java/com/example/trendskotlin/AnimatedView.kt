@@ -1,5 +1,6 @@
 package com.example.trendskotlin
 
+import android.R.attr.*
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -12,12 +13,9 @@ import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.widget.Toast
-import android.R.attr.animation
 import android.animation.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import java.util.ArrayList
-import android.R.attr.right
-import android.R.attr.left
 import android.support.constraint.solver.widgets.WidgetContainer.getBounds
 import android.animation.ValueAnimator
 import android.graphics.PixelFormat
@@ -66,6 +64,7 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     var path2: Path? = null
     var paint: Paint? = null
     var length: Float = 0.toFloat()
+    var length2: Float = 0.toFloat()
 
     var paint2: Paint? = null
     var drawEraser: Boolean = false
@@ -77,19 +76,20 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             viewHeight = it.first
             viewWidth = it.second.toFloat()
 
-            paint = Paint()
+            paint = Paint(Paint.ANTI_ALIAS_FLAG)
             paint!!.color = Color.BLUE
             paint!!.strokeWidth = 10f
             paint!!.style = Paint.Style.STROKE
 
             paint2 = Paint()
-            paint2!!.color = Color.BLUE
-            paint2!!.strokeWidth = 10f
+            paint2!!.color = Color.parseColor("#FAFAFA") //Default Background Color - Should be obtained programmatically instead
+            paint2!!.strokeWidth = 11f
             paint2!!.style = Paint.Style.STROKE
+            paint2!!.alpha = 0
 
             Log.d("ViewDimensions", "Height: $viewHeight, Width: $viewWidth")
 
-            val rands = listOf(
+            var rands = listOf(
                 (0..viewHeight).random().toFloat(),
                 (0..viewHeight).random().toFloat(),
                 (0..viewHeight).random().toFloat(),
@@ -102,32 +102,57 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             path!!.lineTo(2*viewWidth/3, rands[2])
             path!!.lineTo(viewWidth, rands[3])
 
-            path2 = Path()
-            path!!.moveTo(0f, rands[0])
-            path!!.lineTo(viewWidth, rands[3])
+
+            //Create Line
+            //path2 = Path()
+            //path2!!.moveTo(0f, rands[0])
+            //path2!!.lineTo(viewWidth, rands[3])
 
             // Measure the path
             val measure = PathMeasure(path, false)
             length = measure.length
+            //val measure2 = PathMeasure(path2, false)
+            //length2 = measure2.length
 
             //val intervals = floatArrayOf(length, length)
+            val animation = AnimatorSet() //change to false
 
             val animator = ObjectAnimator.ofFloat(this@PathView, "phase", 1f, 0f)
             animator.setDuration(5000)
+
+            val animator2 = ObjectAnimator.ofFloat(this@PathView, "erase", 1f, 0f)
+            animator2.setDuration(5000)
 
             //val view2 = findViewById<PathView2>(R.id.patheraser)
 
             //val animator2 = ObjectAnimator.ofFloat(view2, "phase", 1f, 0f)
             //animator2.setDuration(5000)
 
-            animator.addListener(object : Animator.AnimatorListener {
+            animation.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationEnd(animation: Animator) {
                     Log.d("Hello", "Animation Ended")
-                    paint!!.color = Color.RED
+                    //paint!!.color = Color.RED
                     //invalidate()
                     //view2.init()
 
-                    animator.start()
+                    rands = listOf(
+                        (0..viewHeight).random().toFloat(),
+                        (0..viewHeight).random().toFloat(),
+                        (0..viewHeight).random().toFloat(),
+                        (0..viewHeight).random().toFloat())
+
+                    //Create Line
+                    path = Path()
+                    path!!.moveTo(0f, rands[0])
+                    path!!.lineTo(viewWidth/3, rands[1])
+                    path!!.lineTo(2*viewWidth/3, rands[2])
+                    path!!.lineTo(viewWidth, rands[3])
+
+                    val measure = PathMeasure(path, false)
+                    length = measure.length
+
+                    //animator2.start()
+                    animation.start()
                 }
 
                 //Following Overrides Required Even When not used
@@ -136,11 +161,14 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 override fun onAnimationRepeat(animation: Animator) {}
             })
 
+            animation.play(animator2).after(animator)
+            animation.start()
+
             /*this@PathView.animate().withEndAction {
                 Log.d("Hello", "Animation Ended")
             }.start()*/
 
-            animator.start()
+            //animator.start()
 
             //otherPV.init()
 
@@ -160,6 +188,12 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         invalidate()//will call onDraw
     }
 
+    fun setErase(phase: Float) {
+        paint2!!.alpha = 255
+        paint2!!.pathEffect = createPathEffect(length, phase, 0.0f)
+        invalidate()//will call onDraw
+    }
+
     private fun createPathEffect(pathLength: Float, phase: Float, offset: Float): PathEffect {
         return DashPathEffect(
             floatArrayOf(pathLength, pathLength),
@@ -171,6 +205,7 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         super.onDraw(c)
         //c.drawPath(path, paint)
         c.drawPath(path, paint)
+        c.drawPath(path, paint2)
         //c.drawPath(path, paint2)
         //c.drawLines(floatArrayOf(0f, 20f, 1000f, 1000f), paint)
     }

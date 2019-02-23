@@ -57,35 +57,19 @@ class MainActivity : AppCompatActivity() {
 
         pathView.init()
 
-        //Drawable Path
-        /*val view = TextView(this)
-        view.text = "click me"
-        view.setTextColor(-0x333334)
-        view.gravity = Gravity.CENTER
-        view.textSize = 48f
-        val d = PathDrawable()
-        view.setBackgroundDrawable(d)
-        val l = object : View.OnClickListener {
-            override fun onClick(v: View) {
-                d.startAnimating()
-            }
-        }
-        view.setOnClickListener(l)
-        setContentView(view)*/
-
         // Initialise Buttons
-        partyAddBtn = findViewById(R.id.partyAddBtn)
-        partyRemBtn = findViewById(R.id.partyRemBtn)
-        partyPlayBtn = findViewById(R.id.partyPlayBtn)
-        cpuAddBtn = findViewById(R.id.cpuAddBtn)
-        cpuRemBtn = findViewById(R.id.cpuRemBtn)
-        cpuPlayBtn = findViewById(R.id.cpuPlayBtn)
-        achieveBtn = findViewById(R.id.achieveBtn)
-        helpBtn = findViewById(R.id.helpBtn)
-
-        //Initialise Text Views
-        partyText = findViewById(R.id.partyTextView)
-        cpuText = findViewById(R.id.cpuTextView)
+//        partyAddBtn = findViewById(R.id.partyAddBtn)
+//        partyRemBtn = findViewById(R.id.partyRemBtn)
+//        partyPlayBtn = findViewById(R.id.partyPlayBtn)
+//        cpuAddBtn = findViewById(R.id.cpuAddBtn)
+//        cpuRemBtn = findViewById(R.id.cpuRemBtn)
+//        cpuPlayBtn = findViewById(R.id.cpuPlayBtn)
+//        achieveBtn = findViewById(R.id.achieveBtn)
+//        helpBtn = findViewById(R.id.helpBtn)
+//
+//        //Initialise Text Views
+//        partyText = findViewById(R.id.partyTextView)
+//        cpuText = findViewById(R.id.cpuTextView)
 
         //Set onClick Listeners
         //Party Mode

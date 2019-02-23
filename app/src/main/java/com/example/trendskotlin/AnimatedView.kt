@@ -13,11 +13,21 @@ var viewHeight = 0
 var viewWidth = 0f
 
 class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
-    var path: Path? = null
-    var path2: Path? = null
-    var paint: Paint? = null
-    var length: Float = 0.toFloat()
-    var length2: Float = 0.toFloat()
+    var paths = listOf(Path(), Path())
+    var rands = listOf<Float>() //need Int for random() and Float for moveTo and lineTo
+    var lengths = arrayListOf(0f, 0f)
+
+    var colors = listOf(
+        Color.BLUE,
+        Color.RED,
+        Color.MAGENTA,
+        Color.GREEN
+    )
+
+    var paints = listOf(
+        Paint(),
+        Paint()
+    )
 
     var paintErase: Paint? = null
 
@@ -28,89 +38,82 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             viewHeight = it.first
             viewWidth = it.second.toFloat()
 
-            paint = Paint(Paint.ANTI_ALIAS_FLAG)
-            paint!!.color = Color.BLUE
-            paint!!.strokeWidth = 10f
-            paint!!.style = Paint.Style.STROKE
+            //Init Paints
+            colors = colors.shuffled()
+            paints.forEachIndexed { index, paint ->
+                paint.color = colors[index]
+                paint.isAntiAlias = true
+                paint.strokeWidth = 10f
+                paint.style = Paint.Style.STROKE
+            }
 
+            //Init PaintErase
             paintErase = Paint()
             paintErase!!.color = context.getColor(R.color.colorBackground) //Default Background Color - saved in colors.xml
             paintErase!!.strokeWidth = 11f //Slightly wider for antialiasing
             paintErase!!.style = Paint.Style.STROKE
             paintErase!!.alpha = 0
 
-            Log.d("ViewDimensions", "Height: $viewHeight, Width: $viewWidth")
+            //Log.d("ViewDimensions", "Height: $viewHeight, Width: $viewWidth")
 
-            var rands = listOf(
-                (0..viewHeight).random().toFloat(),
-                (0..viewHeight).random().toFloat(),
-                (0..viewHeight).random().toFloat(),
-                (0..viewHeight).random().toFloat())
+            val animations = AnimatorSet()
 
             //Create Line
-            path = Path()
-            path!!.moveTo(-10f, rands[0])
-            path!!.lineTo(viewWidth/3, rands[1])
-            path!!.lineTo(2*viewWidth/3, rands[2])
-            path!!.lineTo(viewWidth+10, rands[3])
+            paths.forEachIndexed { index, path ->
+                rands = listOf(
+                    (0..viewHeight).random().toFloat(),
+                    (0..viewHeight).random().toFloat(),
+                    (0..viewHeight).random().toFloat(),
+                    (0..viewHeight).random().toFloat())
 
-            //Create Line
-            path2 = Path()
-            path2!!.moveTo(-10f, rands[0])
-            path2!!.lineTo(viewWidth/3, rands[1])
-            path2!!.lineTo(2*viewWidth/3, rands[2])
-            path2!!.lineTo(viewWidth+10, rands[3])
+                path.moveTo(-10f, rands[0])
+                path.lineTo(viewWidth/3, rands[1])
+                path.lineTo(2*viewWidth/3, rands[2])
+                path.lineTo(viewWidth+10, rands[3])
 
-            //Create Line
-            //path2 = Path()
-            //path2!!.moveTo(0f, rands[0])
-            //path2!!.lineTo(viewWidth, rands[3])
-
-            // Measure the path
-            val measure = PathMeasure(path, false)
-            length = measure.length
-            //val measure2 = PathMeasure(path2, false)
-            //length2 = measure2.length
-
-            //val intervals = floatArrayOf(length, length)
-            val animation = AnimatorSet() //change to false
+                // Measure the path
+                val measure = PathMeasure(path, false)
+                lengths[index] = measure.length
+            }
 
             val animator = ObjectAnimator.ofFloat(this@PathView, "phase", 1f, 0f)
-            animator.setDuration(5000)
+            animator.duration = 3000
 
-            val animator2 = ObjectAnimator.ofFloat(this@PathView, "erase", 1f, 0f)
-            animator2.setDuration(5000)
+            val animator2 = ObjectAnimator.ofFloat(this@PathView, "phase2", 1f, 0f)
+            animator2.duration = 3000
 
-            //val view2 = findViewById<PathView2>(R.id.patheraser)
+            val animatorErase = ObjectAnimator.ofFloat(this@PathView, "erase", 1f, 0f)
+            animatorErase.duration = 3000
 
-            //val animator2 = ObjectAnimator.ofFloat(view2, "phase", 1f, 0f)
-            //animator2.setDuration(5000)
-
-            animation.addListener(object : Animator.AnimatorListener {
+            animations.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationEnd(animation: Animator) {
-                    Log.d("Hello", "Animation Ended")
-                    //paint!!.color = Color.RED
-                    //invalidate()
-                    //view2.init()
 
-                    rands = listOf(
-                        (0..viewHeight).random().toFloat(),
-                        (0..viewHeight).random().toFloat(),
-                        (0..viewHeight).random().toFloat(),
-                        (0..viewHeight).random().toFloat())
+                    colors = colors.shuffled()
+                    paints.forEachIndexed { index, paint ->
+                        paint.color = colors[index]
+                    }
 
-                    //Create Line
-                    path = Path()
-                    path!!.moveTo(0f, rands[0])
-                    path!!.lineTo(viewWidth/3, rands[1])
-                    path!!.lineTo(2*viewWidth/3, rands[2])
-                    path!!.lineTo(viewWidth, rands[3])
+                    //Create Lines
+                    paths.forEachIndexed { index, path ->
+                        path.reset() //remove previous lineTo and moveTo
 
-                    val measure = PathMeasure(path, false)
-                    length = measure.length
+                        rands = listOf(
+                            (0..viewHeight).random().toFloat(),
+                            (0..viewHeight).random().toFloat(),
+                            (0..viewHeight).random().toFloat(),
+                            (0..viewHeight).random().toFloat())
 
-                    //animator2.start()
-                    animation.start()
+                        path.moveTo(-10f, rands[0])
+                        path.lineTo(viewWidth/3, rands[1])
+                        path.lineTo(2*viewWidth/3, rands[2])
+                        path.lineTo(viewWidth+10, rands[3])
+
+                        // Measure the path
+                        val measure = PathMeasure(path, false)
+                        lengths[index] = measure.length
+                    }
+
+                    animations.start()
                 }
 
                 //Following Overrides Required Even When not used
@@ -119,36 +122,27 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 override fun onAnimationRepeat(animation: Animator) {}
             })
 
-            animation.play(animator2).after(animator)
-            animation.start()
+            animations.play(animator2)
+            animations.play(animatorErase).after(animator)
+            animations.start()
 
-            /*this@PathView.animate().withEndAction {
-                Log.d("Hello", "Animation Ended")
-            }.start()*/
-
-            //animator.start()
-
-            //otherPV.init()
-
-            //Erase Line
-//            paint!!.color = Color.RED
-//            path!!.moveTo(0f, rands[0])
-//            path!!.lineTo(viewWidth/3, rands[1])
-//            path!!.lineTo(2*viewWidth/3, rands[2])
-//            path!!.lineTo(viewWidth, rands[3])
         }
     }
 
     //is called by ObjectAnimator - ignore never used warning
     fun setPhase(phase: Float) {
-        //Log.d("pathview", "setPhase called with:$phase")
-        paint!!.pathEffect = createPathEffect(length, phase, 0.0f)
+        paints[0].pathEffect = createPathEffect(lengths[0], phase, 0.0f)
+        invalidate()//will call onDraw
+    }
+
+    fun setPhase2(phase: Float) {
+        paints[1].pathEffect = createPathEffect(lengths[1], phase, 0.0f)
         invalidate()//will call onDraw
     }
 
     fun setErase(phase: Float) {
         paintErase!!.alpha = 255
-        paintErase!!.pathEffect = createPathEffect(length, phase, 0.0f)
+        paintErase!!.pathEffect = createPathEffect(lengths.max()!!, phase, 0.0f)
         invalidate()//will call onDraw
     }
 
@@ -161,22 +155,10 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     public override fun onDraw(c: Canvas) {
         super.onDraw(c)
-        //c.drawPath(path, paint)
-        c.drawPath(path, paint)
-        c.drawPath(path, paintErase)
-        //c.drawPath(path, paintErase)
-        //c.drawLines(floatArrayOf(0f, 20f, 1000f, 1000f), paint)
-    }
-
-    fun <T : View> T.height(function: (Int) -> Unit) {
-        if (height == 0)
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    function(height)
-                }
-            })
-        else function(height)
+        paths.forEachIndexed {index, path ->
+            c.drawPath(path, paints[index])
+            c.drawPath(path, paintErase)
+        }
     }
 
     fun <T : View> T.dimensions(function: (Pair<Int, Int>) -> Unit) {

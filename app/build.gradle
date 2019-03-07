@@ -5,6 +5,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+X
+        config {
+            keyAlias '1'
+            keyPassword '123456'
+            storeFile file('/Users/david/Desktop/Keys/1.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.trendskotlin"
@@ -13,6 +22,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -20,24 +30,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:core:1.1.0'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     //androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation "androidx.test.ext:junit:1.1.0"
-
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.1'
-
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.volley:volley:1.1.1'
 }

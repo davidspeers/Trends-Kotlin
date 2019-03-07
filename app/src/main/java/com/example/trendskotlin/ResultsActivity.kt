@@ -44,6 +44,7 @@ class ResultsActivity : AppCompatActivity() {
      * may be best to switch to a
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
+    
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -200,6 +201,10 @@ class ResultsActivity : AppCompatActivity() {
                     val avgs = response.optJSONArray("averages")
                     activity!!.applicationContext.getString(R.string.scores, "Picnic Basket", avgs)
                     showResults(linearLayout, avgs)
+                    Log.d("Scores", response.optJSONArray("averages").toString())
+                    response.getJSONArray("values").iterator().forEach {
+                        Log.d("Scores", JSONObject(it.toString()).getJSONArray("value").toString())
+                    }
                     rootView.findViewById<ProgressBar>(R.id.progressbar).visibility = View.GONE
                 },
                 Response.ErrorListener { error ->
@@ -259,6 +264,11 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     class TrendsGraphFragment : Fragment() {
+        private val num1 = 20
+        private val num2 = 20
+        private val num3 = 20
+        private val num4 = 40
+        private val num5 = 20
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -270,7 +280,7 @@ class ResultsActivity : AppCompatActivity() {
 
             //trendsWebView.loadUrl("https://trends.google.com/trends/explore?geo=US&q=one,two")
 
-            trendsWebView.addJavascriptInterface(WebAppInterface(), "Android");
+            trendsWebView.addJavascriptInterface(WebAppInterface(), "Android")
             trendsWebView.getSettings().setJavaScriptEnabled(true);
             trendsWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
             trendsWebView.getSettings().setLoadWithOverviewMode(true);
@@ -279,6 +289,34 @@ class ResultsActivity : AppCompatActivity() {
             return rootView
         }
 
+        inner class WebAppInterface {
+            val num10 = 20
+            val num1: Int
+                @JavascriptInterface
+                get() = 20
+
+            //This one works
+            @JavascriptInterface
+            fun getVal() : Int {
+                return 20
+            }
+
+            val num2: Int
+                @JavascriptInterface
+                get() = num2
+
+            val num3: Int
+                @JavascriptInterface
+                get() = num3
+
+            val num4: Int
+                @JavascriptInterface
+                get() = num4
+
+            val num5: Int
+                @JavascriptInterface
+                get() = num5
+        }
         companion object {
             /**
              * The fragment argument representing the section number for this
@@ -330,34 +368,6 @@ class ResultsActivity : AppCompatActivity() {
 
     }*/
 }
-
-class WebAppInterface {
-
-        @JavascriptInterface
-        fun getNum1() : Int {
-            return 1
-        }
-
-        @JavascriptInterface
-        fun getNum2() : Int {
-            return 2
-        }
-
-        @JavascriptInterface
-        fun getNum3() : Int {
-            return 3
-        }
-
-        @JavascriptInterface
-        fun getNum4() : Int {
-            return 4
-        }
-
-        @JavascriptInterface
-        fun getNum5() : Int {
-            return 5
-        }
-    }
 
 class someTask() : AsyncTask<Void, Void, String>() {
     override fun doInBackground(vararg params: Void?): String? {

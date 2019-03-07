@@ -77,13 +77,13 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             }
 
             val animator = ObjectAnimator.ofFloat(this@PathView, "phase", 1f, 0f)
-            animator.duration = 3000
+            animator.duration = 4000
 
             val animator2 = ObjectAnimator.ofFloat(this@PathView, "phase2", 1f, 0f)
-            animator2.duration = 3000
+            animator2.duration = 4000
 
             val animatorErase = ObjectAnimator.ofFloat(this@PathView, "erase", 1f, 0f)
-            animatorErase.duration = 3000
+            animatorErase.duration = 4000
 
             animations.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationEnd(animation: Animator) {

@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     var cpuAddBtn : ImageButton? = null
     var cpuRemBtn : ImageButton? = null
     var cpuPlayBtn : ImageButton? = null
-    var achieveBtn : ImageButton? = null
+    var achieveBtn : Button? = null
     var helpBtn : ImageButton? = null
 
     //Instantiate Changing Text Views
@@ -86,6 +86,12 @@ class MainActivity : AppCompatActivity() {
         cpuPlayBtn?.setOnClickListener {
             pushThemesActivity("CPU Mode", cpuMode[numPlayersRef])
         }
+
+        //About Page
+        helpBtn?.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
+            this.startActivity(intent)
+        }
     }
 
     fun nextMode(textView: TextView?, text: String) {
@@ -102,6 +108,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("mode", mode)
             intent.putExtra("secondaryChoice", secondaryChoice)
             this.startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         } else {
             this.shortToast("Internet Connection Required")
         }

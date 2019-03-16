@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_scores.*
 import org.json.JSONArray
 
 
-class ResultsActivity : AppCompatActivity() {
+class ResultsActivity : AppCompatActivity(), ScoresFragment.SendMessage {
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -44,8 +44,16 @@ class ResultsActivity : AppCompatActivity() {
      * may be best to switch to a
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
-    
+
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+
+    //I believe this (and the ScoresFragment.SendMessage extension that allows for this to be overriden is all that is
+    //needed to sendData to webView
+    override fun sendData(message: String) {
+        val tag = "android:switcher:" + R.id.container + ":" + 1
+        val f : TrendsGraphFragment = supportFragmentManager.findFragmentByTag(tag) as TrendsGraphFragment
+        f.displayReceivedData(message)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +96,6 @@ class ResultsActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-
 
     /**
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -150,196 +157,6 @@ class ResultsActivity : AppCompatActivity() {
     /**
      * Results Fragment
      */
-    class ScoresFragment : Fragment() {
-
-        operator fun JSONArray.iterator(): Iterator<Any> = (0 until length()).asSequence().map { get(it) }.iterator()
-
-        fun showResults(linearLayout: LinearLayout, results: JSONArray) {
-            results.iterator().forEach {
-                val childLayout = LinearLayout(context)
-                linearLayout.addView(childLayout)
-                childLayout.apply {
-                    gravity = Gravity.CENTER
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT, 10.0f
-                    ).apply {
-                        orientation = LinearLayout.VERTICAL
-                        gravity = Gravity.CENTER
-                        addView(TextView(context).apply {
-                            weight = 1.0f
-                            text = it.toString()
-                            gravity = Gravity.CENTER
-                        })
-                    }
-                }
-            }
-        }
-
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            val rootView = inflater.inflate(R.layout.fragment_scores, container, false)
-            val linearLayout = rootView.findViewById<LinearLayout>(R.id.linearLayout)
-
-            // Instantiate the RequestQueue.
-            val queue = Volley.newRequestQueue(activity)
-            val url = "https://trends-app-server.herokuapp.com/"
-
-            val jsonObj = JSONObject()
-            jsonObj.put("secret_val", "potato")
-            jsonObj.put("mode", "Party Mode")
-            jsonObj.put("query", arguments?.getString(QUERY))
-            jsonObj.put("values", JSONArray(arguments?.getStringArray(TERMS)))
-
-            //Log.e("sending json", params.toString())
-            val jsonObjReq = JsonObjectRequest(
-                Request.Method.POST, url,
-                jsonObj, Response.Listener<JSONObject> { response ->
-                    //Log.i("Potatoes", response.toString())
-                    val avgs = response.optJSONArray("averages")
-                    activity!!.applicationContext.getString(R.string.scores, "Picnic Basket", avgs)
-                    showResults(linearLayout, avgs)
-                    Log.d("Scores", response.optJSONArray("averages").toString())
-                    response.getJSONArray("values").iterator().forEach {
-                        Log.d("Scores", JSONObject(it.toString()).getJSONArray("value").toString())
-                    }
-                    rootView.findViewById<ProgressBar>(R.id.progressbar).visibility = View.GONE
-                },
-                Response.ErrorListener { error ->
-                    val textView = TextView(context)
-                    textView.text = "Error - " + error.toString() + ' ' + error.networkResponse.statusCode.toString()
-                    linearLayout.addView(
-                        textView
-                    )
-                    rootView.findViewById<ProgressBar>(R.id.progressbar).visibility = View.GONE
-                }
-            )
-
-            //values
-            //cpuAnswer
-
-            queue.add(jsonObjReq)
-
-            /*// Request a string response from the provided URL.
-            val stringRequest = StringRequest(
-                Request.Method.GET, url,
-                Response.Listener<String> { response ->
-                    // Display the first 500 characters of the response string.
-                    textView.text = "Response is: ${response.substring(0, 500)}"
-                },
-                Response.ErrorListener { textView.text = "That didn't work!" }
-            )
-
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest)*/
-
-            //rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
-            return rootView
-        }
-
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            //private val ARG_SECTION_NUMBER = "section_number"
-            private val QUERY = "query"
-            private val TERMS = "terms"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(query: String, terms: Array<String>): ScoresFragment {
-                val fragment = ScoresFragment()
-                val args = Bundle()
-                args.putString(QUERY, query)
-                args.putStringArray(TERMS, terms)
-                fragment.arguments = args
-                return fragment
-            }
-        }
-    }
-
-    class TrendsGraphFragment : Fragment() {
-        private val num1 = 20
-        private val num2 = 20
-        private val num3 = 20
-        private val num4 = 40
-        private val num5 = 20
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            val textArray = arrayOf("One", "Two", "Three", "Four")
-
-            val rootView = inflater.inflate(R.layout.fragment_trends_graph, container, false)
-            val trendsWebView = rootView.findViewById<WebView>(R.id.TrendsWebView)
-
-            //trendsWebView.loadUrl("https://trends.google.com/trends/explore?geo=US&q=one,two")
-
-            trendsWebView.addJavascriptInterface(WebAppInterface(), "Android")
-            trendsWebView.getSettings().setJavaScriptEnabled(true);
-            trendsWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-            trendsWebView.getSettings().setLoadWithOverviewMode(true);
-            trendsWebView.loadUrl("file:///android_asset/graph.html")
-
-            return rootView
-        }
-
-        inner class WebAppInterface {
-            val num10 = 20
-            val num1: Int
-                @JavascriptInterface
-                get() = 20
-
-            //This one works
-            @JavascriptInterface
-            fun getVal() : Int {
-                return 20
-            }
-
-            val num2: Int
-                @JavascriptInterface
-                get() = num2
-
-            val num3: Int
-                @JavascriptInterface
-                get() = num3
-
-            val num4: Int
-                @JavascriptInterface
-                get() = num4
-
-            val num5: Int
-                @JavascriptInterface
-                get() = num5
-        }
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            //private val ARG_SECTION_NUMBER = "section_number"
-            private val QUERY = "query"
-            private val TERMS = "terms"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(query: String, terms: Array<String>): TrendsGraphFragment {
-                val fragment = TrendsGraphFragment()
-                val args = Bundle()
-                args.putString(QUERY, query)
-                args.putStringArray(TERMS, terms)
-                fragment.arguments = args
-                return fragment
-            }
-        }
-    }
 
     /*fun youFunctionForVolleyRequest(
         email: String,
@@ -367,21 +184,4 @@ class ResultsActivity : AppCompatActivity() {
         AppController.getInstance().addToRequestQueue(jsonObjReq)
 
     }*/
-}
-
-class someTask() : AsyncTask<Void, Void, String>() {
-    override fun doInBackground(vararg params: Void?): String? {
-        // ...
-        return "hello"
-    }
-
-    override fun onPreExecute() {
-        super.onPreExecute()
-        // ...
-    }
-
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-        // ...
-    }
 }

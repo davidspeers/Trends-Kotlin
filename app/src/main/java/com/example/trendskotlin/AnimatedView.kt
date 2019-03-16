@@ -155,6 +155,7 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     public override fun onDraw(c: Canvas) {
         super.onDraw(c)
+        //Log.d("Animation", "Animation onDraw called") //method is called multiple times a second
         paths.forEachIndexed {index, path ->
             c.drawPath(path, paints[index])
             c.drawPath(path, paintErase)

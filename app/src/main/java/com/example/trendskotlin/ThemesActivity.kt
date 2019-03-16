@@ -19,6 +19,11 @@ class ThemesActivity: AppCompatActivity() {
         return true
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_right)
+    }
+
     var adapter: ThemeAdapter? = null
     var themesMap = mutableMapOf<String, Array<String>>()
 

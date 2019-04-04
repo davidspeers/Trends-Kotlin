@@ -25,6 +25,11 @@ class ResultsActivity : AppCompatActivity(), ScoresFragment.SendMessage {
      * [androidx.fragment.app.FragmentStatePagerAdapter].
      */
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     //I believe this (and the ScoresFragment.SendMessage extension that allows for this to be overriden is all that is
@@ -38,9 +43,9 @@ class ResultsActivity : AppCompatActivity(), ScoresFragment.SendMessage {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_results)
-
-        setSupportActionBar(toolbar)
-        // Create the adapter that will return a fragment for each of the three
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = intent.getStringExtra("mode")
+        // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 

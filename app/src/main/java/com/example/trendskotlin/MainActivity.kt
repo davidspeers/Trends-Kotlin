@@ -89,8 +89,7 @@ class MainActivity : AppCompatActivity() {
 
         //Achievements Page
         achieveBtn?.setOnClickListener {
-            //val intent = Intent(this, AchievementsActivity::class.java)
-            val intent = Intent(this, EmptyActivity::class.java)
+            val intent = Intent(this, AchievementsActivity::class.java)
             this.startActivity(intent)
         }
 

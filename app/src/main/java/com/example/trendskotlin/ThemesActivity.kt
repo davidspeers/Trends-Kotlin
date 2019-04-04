@@ -2,7 +2,7 @@ package com.example.trendskotlin
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,7 +70,7 @@ class ThemesActivity: AppCompatActivity() {
             val theme = this.themesList[position]
 
             val inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val themeView = inflator.inflate(R.layout.button_themes, null)
+            val themeView = inflator.inflate(R.layout.list_item_themes, null)
 
             val myButton = themeView.findViewById<Button>(R.id.ButtonTheme)
 

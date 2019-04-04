@@ -1,48 +1,28 @@
 package com.example.trendskotlin
 
-import android.support.design.widget.TabLayout
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.os.Bundle
 
 import kotlinx.android.synthetic.main.activity_results.*
 import kotlinx.android.synthetic.main.fragment_results.view.*
-import android.app.ProgressDialog
-import android.content.Context
-import android.os.AsyncTask
-import android.support.v4.content.ContextCompat
-import android.util.Log
+import com.google.android.material.snackbar.Snackbar
 import android.view.*
-import android.view.View.generateViewId
-import android.webkit.JavascriptInterface
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.widget.*
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.android.volley.VolleyError
-import org.json.JSONObject
-import com.android.volley.toolbox.JsonObjectRequest
-import kotlinx.android.synthetic.main.fragment_scores.*
-import org.json.JSONArray
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import com.google.android.material.tabs.TabLayout
 
 
 class ResultsActivity : AppCompatActivity(), ScoresFragment.SendMessage {
 
     /**
-     * The [android.support.v4.view.PagerAdapter] that will provide
+     * The [androidx.viewpager.widget.PagerAdapter] that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
-     * [android.support.v4.app.FragmentStatePagerAdapter].
+     * [androidx.fragment.app.FragmentStatePagerAdapter].
      */
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null

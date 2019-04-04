@@ -29,7 +29,7 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         Paint()
     )
 
-    var paintErase: Paint? = null
+    var paintErase = Paint()
 
     fun init() {
         //this.dimensions is waiting for view dimensions to be available
@@ -48,11 +48,10 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             }
 
             //Init PaintErase
-            paintErase = Paint()
-            paintErase!!.color = context.getColor(R.color.colorBackground) //Default Background Color - saved in colors.xml
-            paintErase!!.strokeWidth = 11f //Slightly wider for antialiasing
-            paintErase!!.style = Paint.Style.STROKE
-            paintErase!!.alpha = 0
+            paintErase.color = context.getColor(R.color.colorBackground) //Default Background Color - saved in colors.xml
+            paintErase.strokeWidth = 11f //Slightly wider for antialiasing
+            paintErase.style = Paint.Style.STROKE
+            paintErase.alpha = 0
 
             //Log.d("ViewDimensions", "Height: $viewHeight, Width: $viewWidth")
 
@@ -141,8 +140,8 @@ class PathView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     }
 
     fun setErase(phase: Float) {
-        paintErase!!.alpha = 255
-        paintErase!!.pathEffect = createPathEffect(lengths.max()!!, phase, 0.0f)
+        paintErase.alpha = 255
+        paintErase.pathEffect = createPathEffect(lengths.max()!!, phase, 0.0f)
         invalidate()//will call onDraw
     }
 

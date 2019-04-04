@@ -16,5 +16,19 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="scores">%1$s: %2$s</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_achievements">AchievementsActivity</string>
+
+    <string name="about_title">
+        How to Play
+    </string>
+
+    <string name="about_body">
+        • Trends with Friends is a game that consists of multiple rounds.\n
+        • In each round you will be given a word, you will then need to think of a word that people google with that
+        word.\n
+        • Your word and the given word will then be combined to become your query.\n
+        • Google Trends will then calculate a score for all the queries in that round.\n
+        • At the end of the last round the scores are tallied and whoever has the highest score wins.\n
+    </string>
 
 </resources>

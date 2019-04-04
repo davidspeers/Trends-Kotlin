@@ -3,7 +3,7 @@ package com.example.trendskotlin
 import android.content.Context
 import android.content.Intent
 import android.media.Image
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -85,6 +85,13 @@ class MainActivity : AppCompatActivity() {
         }
         cpuPlayBtn?.setOnClickListener {
             pushThemesActivity("CPU Mode", cpuMode[numPlayersRef])
+        }
+
+        //Achievements Page
+        achieveBtn?.setOnClickListener {
+            //val intent = Intent(this, AchievementsActivity::class.java)
+            val intent = Intent(this, EmptyActivity::class.java)
+            this.startActivity(intent)
         }
 
         //About Page
